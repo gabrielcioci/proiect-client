@@ -1,0 +1,31 @@
+@import '../styles/variables.scss';
+
+header {
+  position: absolute;
+  top: 0;
+  display: flex;
+  width: 100%;
+  padding: 2rem;
+
+  img {
+    height: 4rem;
+    width: auto;
+  }
+
+  .menu {
+    display: flex;
+    margin-left: auto;
+
+    .menu-link {
+      margin-left: 2rem;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all $animTimingTwo;
+
+      &:hover {
+        color: rgba(white, .8)
+      }
+    }
+  }
+}

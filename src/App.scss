@@ -1,0 +1,51 @@
+@import './styles/variables.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+html {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 1.6rem;
+  color: $raisinBlack;
+  font-family: $poppins;
+  font-weight: 400;
+
+  * {
+    outline: none !important;
+    box-sizing: border-box;
+  }
+
+  .btn {
+    font-size: 1.8rem;
+    line-height: 4rem;
+    color: white;
+    background: $raisinBlack;
+    padding: 0 2.4rem;
+    border-radius: .4rem;
+    cursor: pointer;
+    transition: all $animTimingTwo;
+    border: none;
+
+    &:hover {
+      background: rgba($raisinBlack, .9);
+    }
+  }
+
+  section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
