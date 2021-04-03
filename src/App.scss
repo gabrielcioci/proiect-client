@@ -20,6 +20,9 @@ body {
   color: $raisinBlack;
   font-family: $poppins;
   font-weight: 400;
+  background-image: url('./assets/bg.jpg');
+  background-position: center;
+  background-size: cover;
 
   * {
     outline: none !important;

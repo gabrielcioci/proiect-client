@@ -1,0 +1,84 @@
+@import '../styles/variables.scss';
+
+.dash-table {
+  background: white;
+  width: 100%;
+  max-width: 96rem;
+  border-radius: .8rem;
+
+  table {
+    width: 100%;
+  }
+
+  .table-heads, .table-rows {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  th {
+    width: 100%;
+    border-right: .1rem solid $cultured;
+    text-align: left;
+    padding: 1.2rem 1.6rem;
+
+    &:nth-last-of-type(1) {
+      border: none;
+    }
+  }
+
+  .table-rows {
+    background: #eee;
+    cursor: pointer;
+    transition: all $animTimingTwo;
+    position: relative;
+
+    &:nth-child(even) {
+      background: #ddd;
+    }
+
+    td {
+      width: 100%;
+      text-align: left;
+      padding: 1rem 1.6rem;
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      .delete, .edit, .details {
+        cursor: pointer;
+        transition: all $animTimingTwo;
+        color:$arsenic;
+      }
+
+      .delete:hover {
+        color: $bittersweet;
+      }
+
+      .edit:hover {
+        color: $carrot;
+      }
+    }
+  }
+
+  .table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1rem;
+
+    span {
+      width: 100%;
+      font-size: 1.2rem;
+      color: #ccc;
+      font-weight: 400;
+    }
+
+    .btn {
+      font-size: 1.4rem;
+    }
+  }
+}
