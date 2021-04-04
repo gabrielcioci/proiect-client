@@ -27,7 +27,7 @@ const DashTable = (props) => {
                             {col.label}
                         </th>
                     ))}
-                    {userActions && <th/>}
+                    {userActions && <th className="empty"/>}
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,6 @@ const DashTable = (props) => {
                             </td>
                         ))}
                         {userActions && <td className="row-actions">
-                            <FontAwesomeIcon className="details" icon="ellipsis-h"/>
                             <FontAwesomeIcon className="edit" icon="user-edit"/>
                             <FontAwesomeIcon className="delete" icon="trash-alt"/>
                         </td>}
@@ -48,7 +47,7 @@ const DashTable = (props) => {
                 </tbody>
             </table>
             <div className="table-footer">
-                <span>{rows.length} rezultate gasite</span>
+                <span><FontAwesomeIcon icon="search"/>{rows.length} rezultate gasite</span>
                 {userActions && <div className="btn">Adauga</div>}
             </div>
         </div>

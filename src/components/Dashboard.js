@@ -8,12 +8,16 @@ const Dashboard = (props) => {
     const {role} = useParams();
     const adminCols = [
         {
+            label: "Prenume",
+            key: "prenume"
+        },
+        {
             label: "Nume",
             key: "nume"
         },
         {
-            label: "Prenume",
-            key: "prenume"
+            label: "Telefon",
+            key: "telefon"
         },
         {
             label: "Pozitie",
@@ -28,30 +32,35 @@ const Dashboard = (props) => {
         {
             nume: "Frincu",
             prenume: "Horia",
+            telefon: "0722222201",
             pozitie: "mecanic",
             data: "22-03-2018",
         },
         {
             nume: "Floria",
             prenume: "Robert",
+            telefon: "0722222201",
             pozitie: "boschetar",
             data: "12-04-2018",
         },
         {
             nume: "Rus",
             prenume: "Onisor",
+            telefon: "0722322220",
             pozitie: "asistent",
             data: "02-01-2019",
         },
         {
             nume: "Rhoades",
             prenume: "Lana",
+            telefon: "0742522201",
             pozitie: "menajera",
             data: "02-01-2019",
         },
         {
             nume: "Malkova",
             prenume: "Mia",
+            telefon: "0723122018",
             pozitie: "asistenta",
             data: "02-01-2019",
         },

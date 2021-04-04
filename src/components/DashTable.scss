@@ -27,6 +27,10 @@
     }
   }
 
+  .empty {
+    max-width: 10rem;
+  }
+
   .table-rows {
     background: #eee;
     cursor: pointer;
@@ -46,12 +50,13 @@
     .row-actions {
       display: flex;
       align-items: center;
+      max-width: 10rem;
       justify-content: space-evenly;
 
       .delete, .edit, .details {
         cursor: pointer;
         transition: all $animTimingTwo;
-        color:$arsenic;
+        color: $arsenic;
       }
 
       .delete:hover {
@@ -75,6 +80,10 @@
       font-size: 1.2rem;
       color: #ccc;
       font-weight: 400;
+    }
+
+    svg {
+      margin-right: .6rem;
     }
 
     .btn {

@@ -1,4 +1,5 @@
 import React from 'react';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import './Home.scss'
 
 
@@ -10,7 +11,7 @@ const Home = (props) => {
                 <div className="form">
                     <div className="form-container">
                         <input type="text" placeholder="#Order ID"/>
-                        <div className="btn">Cauta</div>
+                        <div className="btn">Cauta<FontAwesomeIcon icon="search"/></div>
                     </div>
                     {/*<div className="status">In reparatie</div>*/}
                 </div>
