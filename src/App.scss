@@ -29,6 +29,31 @@ body {
     box-sizing: border-box;
   }
 
+  .modal-overlay {
+    background: rgba(0, 0, 0, .8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .modal-content {
+    position: absolute;
+    border: 1px solid #ccc;
+    background: white;
+    overflow: auto;
+    border-radius: .4rem;
+    outline: none;
+    padding: 2rem;
+    width: 100%;
+    max-width: 40rem;
+    height: max-content;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   .btn {
     font-size: 1.8rem;
     line-height: 4rem;
