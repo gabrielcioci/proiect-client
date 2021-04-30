@@ -1,12 +1,43 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom';
 import DashTable from "./DashTable";
 import './Dashboard.scss';
+import axios from "axios";
+import config from "../config";
 
 
 const Dashboard = (props) => {
     const {role} = useParams();
-    const adminCols = [
+    const [clienti, setClienti] = useState(null)
+    const [reparatii, setReparatii] = useState(null)
+    const [angajati, setAngajati] = useState(null)
+    const [masini, setMasini] = useState(null)
+    const [visibleTable, setVisibleTable] = useState('clienti')
+
+    const adminAndAssistent = (role === 'admin' || role === 'asistent')
+    const adminOnly = role === 'admin'
+    const all = (role === 'admin' || role === 'asistent' || role === 'mecanic')
+
+    useEffect(() => {
+        adminAndAssistent && axios.get(`${config.apiUrl}/api/users/`)
+            .then(res => {
+                setClienti(res.data)
+            })
+        all && axios.get(`${config.apiUrl}/api/reparatii/`)
+            .then(res => {
+                setReparatii(res.data)
+            })
+        adminOnly && axios.get(`${config.apiUrl}/api/angajati/`)
+            .then(res => {
+                setAngajati(res.data)
+            })
+        adminAndAssistent && axios.get(`${config.apiUrl}/api/cars/`)
+            .then(res => {
+                setMasini(res.data)
+            })
+    }, [])
+
+    const clientiCols = [
         {
             label: "Prenume",
             key: "prenume"
@@ -20,56 +51,11 @@ const Dashboard = (props) => {
             key: "telefon"
         },
         {
-            label: "Pozitie",
-            key: "pozitie"
-        },
-        {
-            label: "Data",
-            key: "data"
+            label: "CNP",
+            key: "cnp"
         }
     ]
-    const adminRows = [
-        {
-            nume: "Frincu",
-            prenume: "Horia",
-            telefon: "0722222201",
-            pozitie: "mecanic",
-            data: "22-03-2018",
-        },
-        {
-            nume: "Floria",
-            prenume: "Robert",
-            telefon: "0722222201",
-            pozitie: "boschetar",
-            data: "12-04-2018",
-        },
-        {
-            nume: "Rus",
-            prenume: "Onisor",
-            telefon: "0722322220",
-            pozitie: "asistent",
-            data: "02-01-2019",
-        },
-        {
-            nume: "Rhoades",
-            prenume: "Lana",
-            telefon: "0742522201",
-            pozitie: "menajera",
-            data: "02-01-2019",
-        },
-        {
-            nume: "Malkova",
-            prenume: "Mia",
-            telefon: "0723122018",
-            pozitie: "asistenta",
-            data: "02-01-2019",
-        },
-    ]
-    const carsCols = [
-        {
-            label: "Marca",
-            key: "marca"
-        },
+    const masiniCols = [
         {
             label: "Model",
             key: "model"
@@ -79,46 +65,87 @@ const Dashboard = (props) => {
             key: "an"
         },
         {
+            label: "Culoare",
+            key: "culoare"
+        },
+        {
+            label: "Putere",
+            key: "cp"
+        },
+        {
             label: "Pret",
             key: "pret"
         }
     ]
-    const carsRows = [
+    const reparatiiCols = [
         {
-            nume: "Frincu",
-            prenume: "Horia",
-            pozitie: "mecanic",
-            data: "22-03-2018",
+            label: "Model",
+            key: "model"
         },
         {
-            nume: "Floria",
-            prenume: "Robert",
-            pozitie: "boschetar",
-            data: "12-04-2018",
+            label: "An",
+            key: "an"
         },
         {
-            nume: "Rus",
-            prenume: "Onisor",
-            pozitie: "asistent",
-            data: "02-01-2019",
+            label: "Cost",
+            key: "cost"
         },
         {
-            nume: "Rhoades",
-            prenume: "Lana",
-            pozitie: "menajera",
-            data: "02-01-2019",
+            label: "Detalii",
+            key: "detalii"
         },
         {
-            nume: "Malkova",
-            prenume: "Mia",
-            pozitie: "asistenta",
-            data: "02-01-2019",
-        },
+            label: "Complet",
+            key: "reparat"
+        }
     ]
+    const angajatiCols = [
+        {
+            label: "Rol",
+            key: "post"
+        },
+        {
+            label: "Prenume",
+            key: "prenume"
+        },
+        {
+            label: "Nume",
+            key: "nume"
+        },
+        {
+            label: "Telefon",
+            key: "telefon"
+        },
+        {
+            label: "Email",
+            key: "email"
+        },
+        {
+            label: "CNP",
+            key: "cnp"
+        }
+    ]
+
     return (
         <div id="dashboard">
-            <DashTable rows={role === 'admin' ? adminRows : carsRows} cols={role === 'admin' ? adminCols : carsCols}
-                       userActions={role === 'admin' && true}/>
+            <div className="table-select">
+                <div onClick={() => setVisibleTable('clienti')}
+                     className={`btn ${visibleTable === 'clienti' && 'active'}`}>Clienti
+                </div>
+                <div onClick={() => setVisibleTable('angajati')}
+                     className={`btn ${visibleTable === 'angajati' && 'active'}`}>Angajati
+                </div>
+                <div onClick={() => setVisibleTable('reparatii')}
+                     className={`btn ${visibleTable === 'reparatii' && 'active'}`}>Reparatii
+                </div>
+                <div onClick={() => setVisibleTable('masini')}
+                     className={`btn ${visibleTable === 'masini' && 'active'}`}>Masini
+                </div>
+            </div>
+            {adminAndAssistent && visibleTable === 'clienti' && <DashTable rows={clienti} cols={clientiCols}/>}
+            {adminOnly && visibleTable === 'angajati' && <DashTable rows={angajati} cols={angajatiCols}/>}
+            {adminAndAssistent && visibleTable === 'masini' && <DashTable rows={masini} cols={masiniCols}/>}
+            {all && visibleTable === 'reparatii' && <DashTable rows={reparatii} cols={reparatiiCols}/>}
         </div>
     )
 }

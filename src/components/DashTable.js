@@ -32,35 +32,45 @@ const DashTable = (props) => {
 
     return (
         <div className="dash-table">
-            <table>
-                <thead>
-                <tr className="table-heads">
-                    {cols.map((col) => (
-                        <th key={col.key}>
-                            {col.label}
-                        </th>
-                    ))}
-                    {userActions && <th className="empty"/>}
+            <table cellSpacing="0" cellPadding="0" border="0">
+                <tr>
+                    <td>
+                        <table cellSpacing="0" cellPadding="0" border="0">
+                            <tr className="table-heads">
+                                {cols && cols.map((col) => (
+                                    <th key={col.key}>
+                                        {col.label}
+                                    </th>
+                                ))}
+                                {userActions && <th className="empty"/>}
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {rows.map((row, index) => (
-                    <tr className="table-rows" key={index}>
-                        {cols.map(col => (
-                            <td key={col.key} data-title={col.label}>
-                                {getValue(row, col)}
-                            </td>
-                        ))}
-                        {userActions && <td className="row-actions">
-                            <FontAwesomeIcon className="edit" icon="user-edit"/>
-                            <FontAwesomeIcon className="delete" icon="trash-alt"/>
-                        </td>}
-                    </tr>
-                ))}
-                </tbody>
+                <tr>
+                    <td>
+                        <div className="tablebody-container">
+                            <table cellSpacing="0" cellPadding="0" border="0">
+                                {rows && rows.map((row, index) => (
+                                    <tr className="table-rows" key={index}>
+                                        {cols.map(col => (
+                                            <td key={col.key} data-title={col.label}>
+                                                {getValue(row, col)}
+                                            </td>
+                                        ))}
+                                        {userActions && <td className="row-actions">
+                                            <FontAwesomeIcon className="edit" icon="user-edit"/>
+                                            <FontAwesomeIcon className="delete" icon="trash-alt"/>
+                                        </td>}
+                                    </tr>
+                                ))}
+                            </table>
+                        </div>
+                    </td>
+                </tr>
             </table>
             <div className="table-footer">
-                <span><FontAwesomeIcon icon="search"/>{rows.length} rezultate gasite</span>
+                {rows && <span><FontAwesomeIcon icon="search"/>{rows.length} rezultate gasite</span>}
                 {userActions &&
                 <div className="btn" onClick={() => setModalOpen(true)}>Adauga</div>}
                 <Modal overlayClassName="modal-overlay" className="modal-content" isOpen={modalOpen}

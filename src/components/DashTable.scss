@@ -16,6 +16,11 @@
     width: 100%;
   }
 
+  .tablebody-container {
+    overflow: auto;
+    max-height: 40rem;
+  }
+
   th {
     width: 100%;
     border-right: .1rem solid $cultured;
