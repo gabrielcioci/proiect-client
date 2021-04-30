@@ -12,7 +12,7 @@ const Dashboard = (props) => {
     const [reparatii, setReparatii] = useState(null)
     const [angajati, setAngajati] = useState(null)
     const [masini, setMasini] = useState(null)
-    const [visibleTable, setVisibleTable] = useState('clienti')
+    const [visibleTable, setVisibleTable] = useState(role === 'admin' ? 'angajati' : role === 'asistent' ? 'clienti' : 'reparatii')
 
     const adminAndAssistent = (role === 'admin' || role === 'asistent')
     const adminOnly = role === 'admin'
@@ -129,18 +129,18 @@ const Dashboard = (props) => {
     return (
         <div id="dashboard">
             <div className="table-select">
-                <div onClick={() => setVisibleTable('clienti')}
-                     className={`btn ${visibleTable === 'clienti' && 'active'}`}>Clienti
-                </div>
-                <div onClick={() => setVisibleTable('angajati')}
-                     className={`btn ${visibleTable === 'angajati' && 'active'}`}>Angajati
-                </div>
-                <div onClick={() => setVisibleTable('reparatii')}
-                     className={`btn ${visibleTable === 'reparatii' && 'active'}`}>Reparatii
-                </div>
-                <div onClick={() => setVisibleTable('masini')}
-                     className={`btn ${visibleTable === 'masini' && 'active'}`}>Masini
-                </div>
+                {adminOnly && <div onClick={() => setVisibleTable('angajati')}
+                                   className={`btn ${visibleTable === 'angajati' && 'active'}`}>Angajati
+                </div>}
+                {adminAndAssistent && <div onClick={() => setVisibleTable('clienti')}
+                                           className={`btn ${visibleTable === 'clienti' && 'active'}`}>Clienti
+                </div>}
+                {adminAndAssistent && <div onClick={() => setVisibleTable('masini')}
+                                           className={`btn ${visibleTable === 'masini' && 'active'}`}>Masini
+                </div>}
+                {all && <div onClick={() => setVisibleTable('reparatii')}
+                             className={`btn ${visibleTable === 'reparatii' && 'active'}`}>Reparatii
+                </div>}
             </div>
             {adminAndAssistent && visibleTable === 'clienti' && <DashTable rows={clienti} cols={clientiCols}/>}
             {adminOnly && visibleTable === 'angajati' && <DashTable rows={angajati} cols={angajatiCols}/>}

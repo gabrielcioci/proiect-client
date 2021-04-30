@@ -10,8 +10,9 @@ const Header = (props) => {
             <div className="menu">
                 <Link className="menu-link" to="/">Status reparatie</Link>
                 <Link className="menu-link" to="/login">Login</Link>
-                <Link className="menu-link" to="/dashboard/admin">Admin Dashboard</Link>
-                <Link className="menu-link" to="/dashboard/asistent">Asistent Dashboard</Link>
+                <Link className="menu-link" to="/dashboard/admin">Admin</Link>
+                <Link className="menu-link" to="/dashboard/asistent">Asistent</Link>
+                <Link className="menu-link" to="/dashboard/mecanic">Mecanic</Link>
             </div>
         </header>
     )
