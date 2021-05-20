@@ -105,24 +105,34 @@ const DashTable = (props) => {
                 </tr>
                 <tr>
                     <td>
-                        <div className="tablebody-container">
-                            <table cellSpacing="0" cellPadding="0" border="0">
-                                {rows && rows.map((row, index) => (
-                                    <tr className="table-rows" key={index}>
-                                        {cols.map(col => (
-                                            <td key={col.key} data-title={col.label}>
-                                                {getValue(row, col)}
-                                            </td>
-                                        ))}
-                                        {userActions && <td className="row-actions">
-                                            <FontAwesomeIcon className="delete"
-                                                             onClick={(e) => handleSafeDeleteModal(e, row.id)}
-                                                             icon="trash-alt"/>
-                                        </td>}
-                                    </tr>
-                                ))}
-                            </table>
-                        </div>
+                        {rows ?
+                            <div className="tablebody-container">
+                                <table cellSpacing="0" cellPadding="0" border="0">
+                                    {rows.map((row, index) => (
+                                        <tr className="table-rows" key={index}>
+                                            {cols.map(col => (
+                                                <td key={col.key} data-title={col.label}>
+                                                    {getValue(row, col)}
+                                                </td>
+                                            ))}
+                                            {userActions && <td className="row-actions">
+                                                <FontAwesomeIcon className="delete"
+                                                                 onClick={(e) => handleSafeDeleteModal(e, row.id)}
+                                                                 icon="trash-alt"/>
+                                            </td>}
+                                        </tr>
+                                    ))}
+                                </table>
+                            </div> :
+                            <div className="loading">
+                                <div className="lds-ring">
+                                    <div/>
+                                    <div/>
+                                    <div/>
+                                    <div/>
+                                </div>
+                                <p>Loading data...</p>
+                            </div>}
                     </td>
                 </tr>
             </table>
