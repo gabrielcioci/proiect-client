@@ -10,31 +10,45 @@ const Dashboard = (props) => {
     const {role} = useParams();
     const [clienti, setClienti] = useState(null)
     const [reparatii, setReparatii] = useState(null)
-    const [angajati, setAngajati] = useState(null)
+    const [users, setUsers] = useState(null)
     const [masini, setMasini] = useState(null)
-    const [visibleTable, setVisibleTable] = useState(role === 'admin' ? 'angajati' : role === 'asistent' ? 'clienti' : 'reparatii')
+    const [visibleTable, setVisibleTable] = useState(role === 'admin' ? 'users' : role === 'asistent' ? 'clienti' : 'reparatii')
 
     const adminAndAssistent = (role === 'admin' || role === 'asistent')
     const adminOnly = role === 'admin'
     const all = (role === 'admin' || role === 'asistent' || role === 'mecanic')
 
+    const getData = (url, type) => {
+        axios.get(`${config.apiUrl}/api/${url}`)
+            .then(res => {
+                switch (type) {
+                    case "clienti":
+                        setClienti(res.data)
+                        break;
+                    case "reparatii":
+                        setReparatii(res.data)
+                        break;
+                    case "users":
+                        setUsers(res.data)
+                        break;
+                    case "masini":
+                        setMasini(res.data)
+                        break;
+
+                    default:
+                }
+
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
     useEffect(() => {
-        adminAndAssistent && axios.get(`${config.apiUrl}/api/users/`)
-            .then(res => {
-                setClienti(res.data)
-            })
-        all && axios.get(`${config.apiUrl}/api/reparatii/`)
-            .then(res => {
-                setReparatii(res.data)
-            })
-        adminOnly && axios.get(`${config.apiUrl}/api/angajati/`)
-            .then(res => {
-                setAngajati(res.data)
-            })
-        adminAndAssistent && axios.get(`${config.apiUrl}/api/cars/`)
-            .then(res => {
-                setMasini(res.data)
-            })
+        adminAndAssistent && getData("clienti/", "clienti")
+        all && getData("reparatii/", "reparatii")
+        adminOnly && getData("users/", "users")
+        adminAndAssistent && getData("cars/", "masini")
     }, [])
 
     const clientiCols = [
@@ -99,7 +113,7 @@ const Dashboard = (props) => {
             key: "reparat"
         }
     ]
-    const angajatiCols = [
+    const usersCols = [
         {
             label: "Rol",
             key: "post"
@@ -129,8 +143,8 @@ const Dashboard = (props) => {
     return (
         <div id="dashboard">
             <div className="table-select">
-                {adminOnly && <div onClick={() => setVisibleTable('angajati')}
-                                   className={`btn ${visibleTable === 'angajati' && 'active'}`}>Angajati
+                {adminOnly && <div onClick={() => setVisibleTable('users')}
+                                   className={`btn ${visibleTable === 'users' && 'active'}`}>Users
                 </div>}
                 {adminAndAssistent && <div onClick={() => setVisibleTable('clienti')}
                                            className={`btn ${visibleTable === 'clienti' && 'active'}`}>Clienti
@@ -142,10 +156,14 @@ const Dashboard = (props) => {
                              className={`btn ${visibleTable === 'reparatii' && 'active'}`}>Reparatii
                 </div>}
             </div>
-            {adminAndAssistent && visibleTable === 'clienti' && <DashTable rows={clienti} cols={clientiCols}/>}
-            {adminOnly && visibleTable === 'angajati' && <DashTable rows={angajati} cols={angajatiCols}/>}
-            {adminAndAssistent && visibleTable === 'masini' && <DashTable rows={masini} cols={masiniCols}/>}
-            {all && visibleTable === 'reparatii' && <DashTable rows={reparatii} cols={reparatiiCols}/>}
+            {adminOnly && visibleTable === 'users' &&
+            <DashTable rows={users} addUser={true} updateData={getData} userActions={true} cols={usersCols}/>}
+            {adminAndAssistent && visibleTable === 'clienti' &&
+            <DashTable rows={clienti} updateData={getData} cols={clientiCols}/>}
+            {adminAndAssistent && visibleTable === 'masini' &&
+            <DashTable rows={masini} updateData={getData} addMasina={true} cols={masiniCols}/>}
+            {all && visibleTable === 'reparatii' &&
+            <DashTable rows={reparatii} updateData={getData} addReparatie={true} cols={reparatiiCols}/>}
         </div>
     )
 }

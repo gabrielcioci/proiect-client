@@ -33,7 +33,7 @@
   }
 
   .empty {
-    max-width: 10rem;
+    max-width: 6rem;
   }
 
   .table-rows {
@@ -55,7 +55,7 @@
     .row-actions {
       display: flex;
       align-items: center;
-      max-width: 10rem;
+      max-width: 6rem;
       justify-content: space-evenly;
 
       .delete, .edit, .details {
@@ -69,7 +69,7 @@
       }
 
       .edit:hover {
-        color: $carrot;
+        color: $vividSky;
       }
     }
   }
@@ -97,7 +97,7 @@
   }
 }
 
-.formular-angajare {
+.formular {
   display: flex;
   flex-direction: column;
 
@@ -132,7 +132,37 @@
     border-color: $cultured;
   }
 
-  .btn {
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 3rem;
+
+    .btn {
+      width: 100%;
+      margin-right: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:nth-last-of-type(1) {
+        margin-right: 0;
+      }
+    }
+
+    .cancel {
+      background: rgba($raisinBlack, .2);
+
+      &:hover {
+        background: rgba($raisinBlack, .4);
+      }
+    }
+  }
+
+}
+
+.safe-delete-form {
+  .status-field {
+    margin: 1.2rem 0 0;
   }
 }
