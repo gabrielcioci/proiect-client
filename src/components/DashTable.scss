@@ -165,9 +165,11 @@
     color: rgba($arsenic, .3);
   }
 
-  input {
+  input, textarea {
     margin-top: 1.4rem;
     outline: none;
+    width: 100%;
+    font-family: $poppins;
     line-height: 3.6rem;
     font-size: 1.6rem;
     padding: .4rem 1.2rem;
@@ -214,6 +216,62 @@
     }
   }
 
+  .client-type {
+    display: flex;
+    flex-direction: column;
+
+    .btn {
+      margin-top: 1rem;
+
+      &:first-of-type {
+        margin-top: 2rem;
+      }
+    }
+  }
+
+  .existing-client {
+    display: flex;
+    flex-direction: column;
+    padding: .4rem 1.2rem;
+    box-shadow: 0 .4rem 2rem 0 rgba($raisinBlack, .1);
+    border: .1rem solid $cultured;
+    transition: border-color $animTimingTwo;
+    border-radius: .4rem;
+    margin: 1.2rem 0 0;
+    cursor: pointer;
+
+    &:hover {
+      border-color: lighten($raisinBlack, 20%);
+    }
+
+    &:nth-last-of-type(1) {
+      margin-bottom: 2rem;
+    }
+
+    .existing-client-id {
+      font-size: 1.2rem;
+      color: rgba($raisinBlack, .3);
+    }
+  }
+
+  .existing-clients {
+
+    .existing-clients-container {
+      display: flex;
+      flex-direction: column;
+      overflow-x: auto;
+      max-height: 25rem;
+
+      .existing-client {
+        box-shadow: none;
+        border-color: rgba($raisinBlack, .1);
+        margin-top: .6rem;
+        &:hover {
+          border-color: lighten($raisinBlack, 20%);
+        }
+      }
+    }
+  }
 }
 
 .safe-delete-form {

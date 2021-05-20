@@ -12,7 +12,7 @@ const DashTable = (props) => {
         {value: 'mecanic', label: 'Mecanic'},
         {value: 'asistent', label: 'Asistent'},
     ]
-    const {rows, cols, userActions, addUser, addMasina, addReparatie, updateData} = props
+    const {rows, cols, userActions, addUser, addReparatie, updateData} = props
     const [modalOpen, setModalOpen] = useState(false)
     const [nume, setNume] = useState()
     const [prenume, setPrenume] = useState()
@@ -20,16 +20,18 @@ const DashTable = (props) => {
     const [password, setPassword] = useState()
     const [cnp, setCNP] = useState()
     const [telefon, setTelefon] = useState()
-    const [putere, setPutere] = useState()
-    const [pret, setPret] = useState()
     const [model, setModel] = useState()
-    const [culoare, setCuloare] = useState()
     const [an, setAn] = useState()
     const [cost, setCost] = useState()
     const [detalii, setDetalii] = useState()
     const [post, setPost] = useState(userOptions[0].label)
     const [safeDelete, setSafeDelete] = useState(false)
     const [deleteUser, setDeleteUser] = useState()
+    const [step, setStep] = useState(1)
+    const [clientType, setClientType] = useState()
+    const [clienti, setClienti] = useState()
+    const [selectedClient, setSelectedClient] = useState()
+
     const getValue = (row, column) => {
 
         // Get the value
@@ -64,6 +66,7 @@ const DashTable = (props) => {
     const handleModalClose = () => {
         setSafeDelete(false)
         setModalOpen(false)
+        setStep(1)
     }
     const handleAdd = async () => {
         const user = {
@@ -84,6 +87,23 @@ const DashTable = (props) => {
                 console.log(err)
             })
         setModalOpen(false)
+    }
+    const handleClientType = async (type) => {
+        if (type === "existing") {
+            setClientType("existing")
+            await axios.get(`${config.apiUrl}/api/clienti/`)
+                .then(res => {
+                    setClienti(res.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        } else setClientType("new")
+        setStep(2)
+    }
+    const handleSelectedClient = (client) => {
+        setSelectedClient(client)
+        setStep(3)
     }
 
     return (
@@ -138,7 +158,7 @@ const DashTable = (props) => {
             </table>
             <div className="table-footer">
                 {rows && <span><FontAwesomeIcon icon="search"/>{rows.length} rezultate gasite</span>}
-                {(addUser || addReparatie || addMasina) &&
+                {(addUser || addReparatie) &&
                 <div className="btn" onClick={() => setModalOpen(true)}>Adauga</div>}
                 <Modal ariaHideApp={false} overlayClassName="modal-overlay" className="modal-content" isOpen={modalOpen}
                        onRequestClose={() => handleModalClose()}>
@@ -162,37 +182,49 @@ const DashTable = (props) => {
                             <div className="btn" onClick={(e) => handleAdd(e)}>Adauga</div>
                         </div>
                     </form>}
-                    {addMasina && <form className="formular">
-                        <h2>Adauga masina</h2>
-                        <p>Introduceti datele masinii:</p>
-                        <input type="text" name="model" placeholder="Model" onChange={(e) => setModel(e.target.value)}/>
-                        <input type="number" name="an" placeholder="An fabricatie"
-                               onChange={(e) => setAn(e.target.value)}/>
-                        <input type="text" name="culoare" placeholder="Culoare"
-                               onChange={(e) => setCuloare(e.target.value)}/>
-                        <input type="number" name="putere" placeholder="Putere (CP)"
-                               onChange={(e) => setPutere(e.target.value)}/>
-                        <input type="number" name="pret" placeholder="Pret (€)"
-                               onChange={(e) => setPret(e.target.value)}/>
-                        <div className="buttons">
-                            <div className="btn cancel" onClick={() => handleModalClose()}>Anuleaza</div>
-                            <div className="btn">Adauga</div>
-                        </div>
-                    </form>}
                     {addReparatie && <form className="formular">
                         <h2>Inregistreaza reparatie</h2>
-                        <p>Introduceti datele masinii:</p>
-                        <input type="text" name="model" placeholder="Model" onChange={(e) => setModel(e.target.value)}/>
-                        <input type="number" name="an" placeholder="An fabricatie"
-                               onChange={(e) => setAn(e.target.value)}/>
-                        <input type="number" name="cost" placeholder="Cost reparatie"
-                               onChange={(e) => setCost(e.target.value)}/>
-                        <input type="number" name="detalii" placeholder="Detalii reparatie"
-                               onChange={(e) => setDetalii(e.target.value)}/>
-                        <div className="buttons">
+                        {step === 1 && <div className="client-type">
+                            <p>Alegeti tipul de client:</p>
+                            <div className="btn" onClick={(e) => handleClientType("new")}>Client nou</div>
+                            <div className="btn" onClick={(e) => handleClientType("existing")}>Client existent</div>
+                        </div>}
+                        {step === 2 && clientType === "existing" &&
+                        <div className="existing-clients">
+                            <p>Alegeti clientul:</p>
+                            <div className="existing-clients-container">
+                                {clienti.map(client => (
+                                    <div className="existing-client" onClick={() => handleSelectedClient(client)}
+                                         key={client.cnp}>
+                                        <span className="existing-client-name">{client.nume} {client.prenume}</span>
+                                        <span className="existing-client-id">CNP: {client.cnp}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>}
+                        {step === 3 && selectedClient && <>
+                            <p>Client selectat:</p>
+                            <div className="existing-client">
+                                <span
+                                    className="existing-client-name">{selectedClient.nume} {selectedClient.prenume}</span>
+                                <span className="existing-client-id">CNP: {selectedClient.cnp}</span>
+                            </div>
+                        </>}
+                        {step === 3 && <div className="car-data">
+                            <p>Introduceti datele masinii:</p>
+                            <input type="text" name="model" placeholder="Model"
+                                   onChange={(e) => setModel(e.target.value)}/>
+                            <input type="number" name="an" placeholder="An fabricatie"
+                                   onChange={(e) => setAn(e.target.value)}/>
+                            <input type="number" name="cost" placeholder="Cost reparatie (€)"
+                                   onChange={(e) => setCost(e.target.value)}/>
+                            <textarea name="detalii" placeholder="Detalii reparatie"
+                                      onChange={(e) => setDetalii(e.target.value)}/>
+                        </div>}
+                        {step === 3 && <div className="buttons">
                             <div className="btn cancel" onClick={() => handleModalClose()}>Anuleaza</div>
                             <div className="btn">Adauga</div>
-                        </div>
+                        </div>}
                     </form>}
                     {safeDelete && deleteUser && <form className="formular safe-delete-form">
                         <h2>Sterge angajat</h2>

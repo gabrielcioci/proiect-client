@@ -64,6 +64,8 @@ body {
     cursor: pointer;
     transition: all $animTimingTwo;
     border: none;
+    display: flex;
+    justify-content: center;
 
     &:hover {
       background: rgba($raisinBlack, .9);

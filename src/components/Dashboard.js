@@ -161,7 +161,7 @@ const Dashboard = (props) => {
             {adminAndAssistent && visibleTable === 'clienti' &&
             <DashTable rows={clienti} updateData={getData} cols={clientiCols}/>}
             {adminAndAssistent && visibleTable === 'masini' &&
-            <DashTable rows={masini} updateData={getData} addMasina={true} cols={masiniCols}/>}
+            <DashTable rows={masini} updateData={getData} cols={masiniCols}/>}
             {all && visibleTable === 'reparatii' &&
             <DashTable rows={reparatii} updateData={getData} addReparatie={true} cols={reparatiiCols}/>}
         </div>
