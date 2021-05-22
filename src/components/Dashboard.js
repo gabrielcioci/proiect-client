@@ -11,7 +11,6 @@ const Dashboard = (props) => {
     const [clienti, setClienti] = useState(null)
     const [reparatii, setReparatii] = useState(null)
     const [users, setUsers] = useState(null)
-    const [masini, setMasini] = useState(null)
     const [visibleTable, setVisibleTable] = useState(role === 'admin' ? 'users' : role === 'asistent' ? 'clienti' : 'reparatii')
 
     const adminAndAssistent = (role === 'admin' || role === 'asistent')
@@ -31,9 +30,6 @@ const Dashboard = (props) => {
                     case "users":
                         setUsers(res.data)
                         break;
-                    case "masini":
-                        setMasini(res.data)
-                        break;
 
                     default:
                 }
@@ -48,7 +44,6 @@ const Dashboard = (props) => {
         adminAndAssistent && getData("clienti/", "clienti")
         all && getData("reparatii/", "reparatii")
         adminOnly && getData("users/", "users")
-        adminAndAssistent && getData("cars/", "masini")
     }, [])
 
     const clientiCols = [
@@ -67,28 +62,6 @@ const Dashboard = (props) => {
         {
             label: "CNP",
             key: "cnp"
-        }
-    ]
-    const masiniCols = [
-        {
-            label: "Model",
-            key: "model"
-        },
-        {
-            label: "An",
-            key: "an"
-        },
-        {
-            label: "Culoare",
-            key: "culoare"
-        },
-        {
-            label: "Putere",
-            key: "cp"
-        },
-        {
-            label: "Pret",
-            key: "pret"
         }
     ]
     const reparatiiCols = [
@@ -149,9 +122,6 @@ const Dashboard = (props) => {
                 {adminAndAssistent && <div onClick={() => setVisibleTable('clienti')}
                                            className={`btn ${visibleTable === 'clienti' && 'active'}`}>Clienti
                 </div>}
-                {adminAndAssistent && <div onClick={() => setVisibleTable('masini')}
-                                           className={`btn ${visibleTable === 'masini' && 'active'}`}>Masini
-                </div>}
                 {all && <div onClick={() => setVisibleTable('reparatii')}
                              className={`btn ${visibleTable === 'reparatii' && 'active'}`}>Reparatii
                 </div>}
@@ -160,8 +130,6 @@ const Dashboard = (props) => {
             <DashTable rows={users} addUser={true} updateData={getData} userActions={true} cols={usersCols}/>}
             {adminAndAssistent && visibleTable === 'clienti' &&
             <DashTable rows={clienti} updateData={getData} cols={clientiCols}/>}
-            {adminAndAssistent && visibleTable === 'masini' &&
-            <DashTable rows={masini} updateData={getData} cols={masiniCols}/>}
             {all && visibleTable === 'reparatii' &&
             <DashTable rows={reparatii} updateData={getData} addReparatie={true} cols={reparatiiCols}/>}
         </div>
