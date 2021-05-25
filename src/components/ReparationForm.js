@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import axios from "axios";
 import config from "../config";
+import {useCookies} from "react-cookie";
 
 const ReparationForm = props => {
+    const [cookies, setCookie] = useCookies(['name'])
     const [clientType, setClientType] = useState()
     const [nume, setNume] = useState()
     const [prenume, setPrenume] = useState()
@@ -37,7 +39,7 @@ const ReparationForm = props => {
     const handleClientType = async (type) => {
         if (type === "existing") {
             setClientType("existing")
-            await axios.get(`${config.apiUrl}/api/clienti/`)
+            await axios.get(`${config.apiUrl}/api/clienti/`, {headers: {"Authorization": `Bearer ${cookies.token}`}})
                 .then(res => {
                     setClienti(res.data)
                 })
@@ -61,7 +63,7 @@ const ReparationForm = props => {
                 telefon,
                 email
             }
-            await axios.post(`${config.apiUrl}/api/clienti`, client)
+            await axios.post(`${config.apiUrl}/api/clienti`, client, {headers: {"Authorization": `Bearer ${cookies.token}`}})
                 .then(res => {
                     console.log("ClientID: " + res.data.id)
                     setClientID(res.data.id)
@@ -80,7 +82,7 @@ const ReparationForm = props => {
             clientID,
             reparat: false,
         }
-        await axios.post(`${config.apiUrl}/api/reparatii`, reparatie)
+        await axios.post(`${config.apiUrl}/api/reparatii`, reparatie, {headers: {"Authorization": `Bearer ${cookies.token}`}})
             .then(res => {
                 setReparatieID(res.data.id)
                 updateData("reparatii/", "reparatii")

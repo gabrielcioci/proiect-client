@@ -56,5 +56,12 @@
     .btn {
       width: 100%;
     }
+
+    .error {
+      color: $bittersweet;
+      font-size: 1.4rem;
+      margin-bottom: 1.6rem;
+      width: max-content;
+    }
   }
 }

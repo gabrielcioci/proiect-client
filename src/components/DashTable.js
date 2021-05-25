@@ -8,8 +8,10 @@ import axios from "axios";
 import SafeDelete from "./SafeDelete";
 import ReparationForm from "./ReparationForm";
 import AddUserForm from "./AddUserForm";
+import {useCookies} from "react-cookie";
 
 const DashTable = (props) => {
+    const [cookies, setCookie] = useCookies(['name'])
     const {rows, cols, userActions, addUser, addReparatie, updateData} = props
     const [modalOpen, setModalOpen] = useState(false)
     const [safeDelete, setSafeDelete] = useState(false)
@@ -25,7 +27,7 @@ const DashTable = (props) => {
 
     }
     const handleSafeDeleteModal = async (e, id) => {
-        await axios.get(`${config.apiUrl}/api/users/${id}`)
+        await axios.get(`${config.apiUrl}/api/users/${id}`, {headers: {"Authorization": `Bearer ${cookies.token}`}})
             .then(res => {
                 setDeleteUser(res.data)
             })
@@ -36,7 +38,7 @@ const DashTable = (props) => {
         setModalOpen(true)
     }
     const handleDelete = async () => {
-        await axios.delete(`${config.apiUrl}/api/users/${deleteUser.id}`)
+        await axios.delete(`${config.apiUrl}/api/users/${deleteUser.id}`, {headers: {"Authorization": `Bearer ${cookies.token}`}})
             .then(() => {
                 setDeleteUser(null)
                 setSafeDelete(false)

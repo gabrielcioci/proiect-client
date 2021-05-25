@@ -1,17 +1,14 @@
 import React from 'react'
-import {connect} from "react-redux";
-import Page from "./Page";
+import {useCookies} from "react-cookie";
+import {withRouter} from "react-router";
 
-const UserPage = props => {
+const UserPage = (props) => {
+    const [cookies, setCookie] = useCookies(['name'])
     return (
-        <Page>
-            {props.user ? props.children : ''}
-        </Page>
+        <>
+            {cookies.token ? props.children : props.history.push("/")}
+        </>
     )
 }
 
-const mapStateToProps = (state) => ({
-    user: state.auth.user
-})
-
-export default connect(mapStateToProps)(UserPage)
+export default withRouter(UserPage)

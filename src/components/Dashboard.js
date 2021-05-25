@@ -1,16 +1,21 @@
 import React, {useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom';
+import {withRouter} from "react-router";
 import DashTable from "./DashTable";
 import './Dashboard.scss';
 import axios from "axios";
 import config from "../config";
+import UserPage from "./Layout/UserPage";
+import {useCookies} from "react-cookie";
 
 
 const Dashboard = (props) => {
-    const {role} = useParams();
     const [clienti, setClienti] = useState(null)
     const [reparatii, setReparatii] = useState(null)
     const [users, setUsers] = useState(null)
+    const [cookies, setCookies] = useCookies(['name'])
+    const {token, user_role} = cookies
+    const role = user_role.toLowerCase()
+
     const [visibleTable, setVisibleTable] = useState(role === 'admin' ? 'users' : role === 'asistent' ? 'clienti' : 'reparatii')
 
     const adminAndAssistent = (role === 'admin' || role === 'asistent')
@@ -18,7 +23,7 @@ const Dashboard = (props) => {
     const all = (role === 'admin' || role === 'asistent' || role === 'mecanic')
 
     const getData = (url, type) => {
-        axios.get(`${config.apiUrl}/api/${url}`)
+        axios.get(`${config.apiUrl}/api/${url}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(res => {
                 switch (type) {
                     case "clienti":
@@ -114,26 +119,28 @@ const Dashboard = (props) => {
     ]
 
     return (
-        <div id="dashboard">
-            <div className="table-select">
-                {adminOnly && <div onClick={() => setVisibleTable('users')}
-                                   className={`btn ${visibleTable === 'users' && 'active'}`}>Users
-                </div>}
-                {adminAndAssistent && <div onClick={() => setVisibleTable('clienti')}
-                                           className={`btn ${visibleTable === 'clienti' && 'active'}`}>Clienti
-                </div>}
-                {all && <div onClick={() => setVisibleTable('reparatii')}
-                             className={`btn ${visibleTable === 'reparatii' && 'active'}`}>Reparatii
-                </div>}
+        <UserPage>
+            <div id="dashboard">
+                <div className="table-select">
+                    {adminOnly && <div onClick={() => setVisibleTable('users')}
+                                       className={`btn ${visibleTable === 'users' && 'active'}`}>Users
+                    </div>}
+                    {adminAndAssistent && <div onClick={() => setVisibleTable('clienti')}
+                                               className={`btn ${visibleTable === 'clienti' && 'active'}`}>Clienti
+                    </div>}
+                    {all && <div onClick={() => setVisibleTable('reparatii')}
+                                 className={`btn ${visibleTable === 'reparatii' && 'active'}`}>Reparatii
+                    </div>}
+                </div>
+                {adminOnly && visibleTable === 'users' &&
+                <DashTable rows={users} addUser={true} updateData={getData} userActions={true} cols={usersCols}/>}
+                {adminAndAssistent && visibleTable === 'clienti' &&
+                <DashTable rows={clienti} updateData={getData} cols={clientiCols}/>}
+                {all && visibleTable === 'reparatii' &&
+                <DashTable rows={reparatii} updateData={getData} addReparatie={true} cols={reparatiiCols}/>}
             </div>
-            {adminOnly && visibleTable === 'users' &&
-            <DashTable rows={users} addUser={true} updateData={getData} userActions={true} cols={usersCols}/>}
-            {adminAndAssistent && visibleTable === 'clienti' &&
-            <DashTable rows={clienti} updateData={getData} cols={clientiCols}/>}
-            {all && visibleTable === 'reparatii' &&
-            <DashTable rows={reparatii} updateData={getData} addReparatie={true} cols={reparatiiCols}/>}
-        </div>
+        </UserPage>
     )
 }
 
-export default Dashboard
+export default withRouter(Dashboard)

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {withRouter} from "react-router";
 import './Home.scss'
 import axios from "axios";
 import config from "../config";
@@ -7,7 +8,6 @@ import Modal from "react-modal";
 
 
 const Home = (props) => {
-
     const [id, setId] = useState('')
     const [reparatie, setReparatie] = useState(null)
     const [status, setStatus] = useState(false)
@@ -74,4 +74,4 @@ const Home = (props) => {
     )
 }
 
-export default Home
+export default withRouter(Home)

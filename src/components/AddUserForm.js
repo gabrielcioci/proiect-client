@@ -2,12 +2,14 @@ import React, {useState} from 'react'
 import Dropdown from "react-dropdown";
 import axios from "axios";
 import config from "../config";
+import {useCookies} from "react-cookie";
 
 const AddUserForm = props => {
     const userOptions = [
         {value: 'mecanic', label: 'Mecanic'},
         {value: 'asistent', label: 'Asistent'},
     ]
+    const [cookies,setCookie] = useCookies(['name'])
     const [nume, setNume] = useState()
     const [prenume, setPrenume] = useState()
     const [email, setEmail] = useState()
@@ -36,7 +38,7 @@ const AddUserForm = props => {
             password,
             post,
         }
-        await axios.post(`${config.apiUrl}/api/users`, user)
+        await axios.post(`${config.apiUrl}/api/users`, user,{headers: {"Authorization": `Bearer ${cookies.token}`}})
             .then(res => {
                 console.log(res.data)
                 updateData("users/", "users")
