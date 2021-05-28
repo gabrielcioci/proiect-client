@@ -6,6 +6,7 @@ import axios from "axios";
 import config from "../config";
 import UserPage from "./Layout/UserPage";
 import {useCookies} from "react-cookie";
+import Page from "./Layout/Page";
 
 
 const Dashboard = (props) => {
@@ -79,7 +80,7 @@ const Dashboard = (props) => {
             key: "an"
         },
         {
-            label: "Cost",
+            label: "Cost(€)",
             key: "cost"
         },
         {
@@ -119,8 +120,8 @@ const Dashboard = (props) => {
     ]
 
     return (
-        <UserPage>
-            <div id="dashboard">
+        <Page id="dashboard">
+            <UserPage>
                 <div className="table-select">
                     {adminOnly && <div onClick={() => setVisibleTable('users')}
                                        className={`btn ${visibleTable === 'users' && 'active'}`}>Users
@@ -138,8 +139,8 @@ const Dashboard = (props) => {
                 <DashTable rows={clienti} updateData={getData} cols={clientiCols}/>}
                 {all && visibleTable === 'reparatii' &&
                 <DashTable rows={reparatii} updateData={getData} addReparatie={true} cols={reparatiiCols}/>}
-            </div>
-        </UserPage>
+            </UserPage>
+        </Page>
     )
 }
 

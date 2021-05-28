@@ -5,6 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import config from "../config";
 import './Login.scss';
+import Page from "./Layout/Page";
 
 const Login = (props) => {
     const [email, setEmail] = useState()
@@ -36,7 +37,7 @@ const Login = (props) => {
     }
 
     return (
-        <div id="login">
+        <Page id="login">
             <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
                 <h2>Autentificare</h2>
                 <div className="input">
@@ -52,7 +53,7 @@ const Login = (props) => {
                 {error && <span className="error">Email sau parola incorecte!</span>}
                 <button className="btn" type="submit">Log in</button>
             </form>
-        </div>
+        </Page>
     )
 }
 

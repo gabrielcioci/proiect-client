@@ -5,6 +5,7 @@ import './Home.scss'
 import axios from "axios";
 import config from "../config";
 import Modal from "react-modal";
+import Page from "./Layout/Page";
 
 
 const Home = (props) => {
@@ -41,7 +42,7 @@ const Home = (props) => {
 
 
     return (
-        <section id="home">
+        <Page id="home">
             <div className="container">
                 <h1>Verifica statusul reparatiei</h1>
                 <form className="form">
@@ -70,7 +71,7 @@ const Home = (props) => {
                     </div>}
                 </form>
             </div>
-        </section>
+        </Page>
     )
 }
 
