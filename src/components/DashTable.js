@@ -9,6 +9,7 @@ import SafeDelete from "./SafeDelete";
 import ReparationForm from "./ReparationForm";
 import AddUserForm from "./AddUserForm";
 import {useCookies} from "react-cookie";
+import ReparationInfo from "./ReparationInfo";
 
 const DashTable = (props) => {
     const [cookies, setCookie] = useCookies(['name'])
@@ -53,6 +54,7 @@ const DashTable = (props) => {
         setSafeDelete(false)
         setModalOpen(false)
         setStep(1)
+        setReparatieID('')
     }
 
     const handleRepair = async (e, id) => {
@@ -141,16 +143,12 @@ const DashTable = (props) => {
                    onRequestClose={() => handleModalClose()}>
                 {addUser && !safeDelete &&
                 <AddUserForm handleModalClose={handleModalClose} updateData={updateData}/>}
-                {addReparatie &&
-                <ReparationForm step={step} setStep={setStep} updateData={updateData}
-                                setReparatieID={setReparatieID}
-                                handleModalClose={handleModalClose} setModalOpen={setModalOpen}/>}
-                {reparatieID && <div className="reparation-id-modal">
-                    <h2>Reparatie inregistrata!</h2>
-                    <p>Reparatia a fost inregistrata cu success. Pentru a verifica statusul reparatie clientul poate
-                        folosii urmatorul ID:</p>
-                    <div className="reparation-id">{reparatieID}</div>
-                </div>}
+                {addReparatie && !reparatieID && <ReparationForm step={step} setStep={setStep} updateData={updateData}
+                                                                 setReparatieID={setReparatieID}
+                                                                 handleModalClose={handleModalClose}
+                                                                 setModalOpen={setModalOpen}/>}
+                {reparatieID && <ReparationInfo reparatieID={reparatieID} setReparatieID={setReparatieID}
+                                                handleModalClose={handleModalClose}/>}
                 {safeDelete && deleteUser && <SafeDelete deleteUser={deleteUser} handleModalClose={handleModalClose}
                                                          handleDelete={handleDelete}/>}
 

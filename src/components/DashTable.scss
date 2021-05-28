@@ -96,7 +96,6 @@
 
   .table-rows {
     background: #eee;
-    cursor: pointer;
     transition: all $animTimingTwo;
     position: relative;
 
@@ -146,9 +145,10 @@
       align-items: center;
       height: 4rem;
       width: 4rem;
-      background: rgba($arsenic,.5);
+      background: rgba($arsenic, .5);
+
       &:hover {
-        background: rgba($arsenic,.7);
+        background: rgba($arsenic, .7);
       }
     }
   }
@@ -296,6 +296,19 @@
           border-color: lighten($raisinBlack, 20%);
         }
       }
+    }
+  }
+
+  .reparation-info {
+    margin: 2rem 0;
+
+    span {
+      margin-left: 1rem;
+      background: rgba($vividSky, .3);
+      border: .1rem solid $vividSky;
+      color: $vividSky;
+      padding: .2rem .6rem;
+      border-radius: .4rem;
     }
   }
 }

@@ -17,10 +17,9 @@ const ReparationForm = props => {
     const [serie, setSerie] = useState()
     const [detalii, setDetalii] = useState()
     const [clienti, setClienti] = useState()
-    const [clientID, setClientID] = useState()
     const [selectedClient, setSelectedClient] = useState()
 
-    const {handleModalClose, step, setStep, updateData, setReparatieID, setModalOpen} = props
+    const {handleModalClose, step, setStep, updateData, setReparatieID} = props
 
     const resetFields = () => {
         setNume('')
@@ -34,7 +33,6 @@ const ReparationForm = props => {
         setSerie('')
         setDetalii('')
         setSelectedClient(null)
-        setReparatieID('')
     }
     const handleClientType = async (type) => {
         if (type === "existing") {
@@ -51,10 +49,10 @@ const ReparationForm = props => {
     }
     const handleSelectedClient = (client) => {
         setSelectedClient(client)
-        setClientID(client.id)
         setStep(3)
     }
     const handleAddReparation = async () => {
+        let clientID
         if (clientType === 'new') {
             const client = {
                 nume,
@@ -65,13 +63,14 @@ const ReparationForm = props => {
             }
             await axios.post(`${config.apiUrl}/api/clienti`, client, {headers: {"Authorization": `Bearer ${cookies.token}`}})
                 .then(res => {
-                    console.log("ClientID: " + res.data.id)
-                    setClientID(res.data.id)
+                    clientID = res.data.id
                     updateData("clienti/", "clienti")
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        } else {
+            clientID = selectedClient.id
         }
         const reparatie = {
             model,
@@ -87,7 +86,6 @@ const ReparationForm = props => {
                 setReparatieID(res.data.id)
                 updateData("reparatii/", "reparatii")
                 resetFields()
-                handleModalClose()
             })
             .catch(err => {
                 console.log(err)
