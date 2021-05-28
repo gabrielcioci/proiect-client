@@ -84,6 +84,10 @@
     &:nth-last-of-type(1) {
       border: none;
     }
+
+    &[data-title="Status"] {
+      max-width: 8rem;
+    }
   }
 
   .empty {
@@ -104,6 +108,12 @@
       width: 100%;
       text-align: left;
       padding: 1rem 1.6rem;
+
+      &[data-title="Status"] {
+        display: flex;
+        justify-content: center;
+        max-width: 8rem;
+      }
     }
 
     .row-actions {
@@ -124,6 +134,21 @@
 
       .edit:hover {
         color: $vividSky;
+      }
+    }
+
+    .repair-done {
+      color: green;
+    }
+
+    .complete-btn {
+      display: flex;
+      align-items: center;
+      height: 4rem;
+      width: 4rem;
+      background: rgba($arsenic,.5);
+      &:hover {
+        background: rgba($arsenic,.7);
       }
     }
   }
@@ -266,6 +291,7 @@
         box-shadow: none;
         border-color: rgba($raisinBlack, .1);
         margin-top: .6rem;
+
         &:hover {
           border-color: lighten($raisinBlack, 20%);
         }

@@ -12,7 +12,7 @@ import {useCookies} from "react-cookie";
 
 const DashTable = (props) => {
     const [cookies, setCookie] = useCookies(['name'])
-    const {rows, cols, userActions, addUser, addReparatie, updateData} = props
+    const {rows, cols, userActions, completeButton, addUser, addReparatie, updateData} = props
     const [modalOpen, setModalOpen] = useState(false)
     const [safeDelete, setSafeDelete] = useState(false)
     const [deleteUser, setDeleteUser] = useState()
@@ -55,6 +55,25 @@ const DashTable = (props) => {
         setStep(1)
     }
 
+    const handleRepair = async (e, id) => {
+        let newReparatie = {}
+        await axios.get(`${config.apiUrl}/api/reparatii/${id}`, {headers: {"Authorization": `Bearer ${cookies.token}`}})
+            .then(res => {
+                newReparatie = {...res.data}
+                newReparatie.reparat = true
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        await axios.put(`${config.apiUrl}/api/reparatii/${id}`, newReparatie, {headers: {"Authorization": `Bearer ${cookies.token}`}})
+            .then(() => {
+                updateData("reparatii/", "reparatii")
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
     return (
         <div className="dash-table">
             <table cellSpacing="0" cellPadding="0" border="0">
@@ -63,7 +82,7 @@ const DashTable = (props) => {
                         <table cellSpacing="0" cellPadding="0" border="0">
                             <tr className="table-heads">
                                 {cols && cols.map((col) => (
-                                    <th key={col.key}>
+                                    <th key={col.key} data-title={col.label}>
                                         {col.label}
                                     </th>
                                 ))}
@@ -81,7 +100,15 @@ const DashTable = (props) => {
                                         <tr className="table-rows" key={index}>
                                             {cols.map(col => (
                                                 <td key={col.key} data-title={col.label}>
-                                                    {getValue(row, col)}
+                                                    {col.key === 'reparat' ? getValue(row, col) === true ?
+                                                        <FontAwesomeIcon icon="check"
+                                                                         className="repair-done"/> :
+                                                        <div className="btn complete-btn"
+                                                             onClick={(e) => handleRepair(e, row.id)}>
+                                                            <FontAwesomeIcon icon="tools"
+                                                                             className="complete-icon"/>
+                                                        </div> : getValue(row, col)}
+                                                    {col.key === 'cost' && '€'}
                                                 </td>
                                             ))}
                                             {userActions && <td className="row-actions">

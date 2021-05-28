@@ -80,7 +80,7 @@ const Dashboard = (props) => {
             key: "an"
         },
         {
-            label: "Cost(€)",
+            label: "Cost",
             key: "cost"
         },
         {
@@ -88,7 +88,7 @@ const Dashboard = (props) => {
             key: "detalii"
         },
         {
-            label: "Complet",
+            label: "Status",
             key: "reparat"
         }
     ]
@@ -138,7 +138,8 @@ const Dashboard = (props) => {
                 {adminAndAssistent && visibleTable === 'clienti' &&
                 <DashTable rows={clienti} updateData={getData} cols={clientiCols}/>}
                 {all && visibleTable === 'reparatii' &&
-                <DashTable rows={reparatii} updateData={getData} addReparatie={true} cols={reparatiiCols}/>}
+                <DashTable rows={reparatii} updateData={getData} addReparatie={true} completeButton={true}
+                           cols={reparatiiCols}/>}
             </UserPage>
         </Page>
     )
