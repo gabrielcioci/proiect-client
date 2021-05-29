@@ -10,6 +10,7 @@ import ReparationForm from "./ReparationForm";
 import AddUserForm from "./AddUserForm";
 import {useCookies} from "react-cookie";
 import ReparationInfo from "./ReparationInfo";
+import UserReparation from "./UserReparation";
 
 const DashTable = (props) => {
     const [cookies, setCookie] = useCookies(['name'])
@@ -19,6 +20,8 @@ const DashTable = (props) => {
     const [deleteUser, setDeleteUser] = useState()
     const [step, setStep] = useState(1)
     const [reparatieID, setReparatieID] = useState()
+    const [showUserRepatatii, setShowUserReparatii] = useState(false)
+    const [userReparatii, setUserReparatii] = useState()
 
     const getValue = (row, column) => {
 
@@ -27,6 +30,19 @@ const DashTable = (props) => {
         return value || '-'
 
     }
+
+    const handleShowReparatii = async (e, id) => {
+        await axios.get(`${config.apiUrl}/api/reparatii/byuserid/${id}`, {headers: {"Authorization": `Bearer ${cookies.token}`}})
+            .then((res) => {
+                setUserReparatii(res.data)
+                setModalOpen(true)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        setShowUserReparatii(true)
+    }
+
     const handleSafeDeleteModal = async (e, id) => {
         await axios.get(`${config.apiUrl}/api/users/${id}`, {headers: {"Authorization": `Bearer ${cookies.token}`}})
             .then(res => {
@@ -55,6 +71,8 @@ const DashTable = (props) => {
         setModalOpen(false)
         setStep(1)
         setReparatieID('')
+        setUserReparatii('')
+        setShowUserReparatii(false)
     }
 
     const handleRepair = async (e, id) => {
@@ -79,9 +97,11 @@ const DashTable = (props) => {
     return (
         <div className="dash-table">
             <table cellSpacing="0" cellPadding="0" border="0">
+                <tbody>
                 <tr>
                     <td>
                         <table cellSpacing="0" cellPadding="0" border="0">
+                            <tbody>
                             <tr className="table-heads">
                                 {cols && cols.map((col) => (
                                     <th key={col.key} data-title={col.label}>
@@ -90,6 +110,7 @@ const DashTable = (props) => {
                                 ))}
                                 {userActions && <th className="empty"/>}
                             </tr>
+                            </tbody>
                         </table>
                     </td>
                 </tr>
@@ -98,10 +119,12 @@ const DashTable = (props) => {
                         {rows ?
                             <div className="tablebody-container">
                                 <table cellSpacing="0" cellPadding="0" border="0">
+                                    <tbody>
                                     {rows.map((row, index) => (
                                         <tr className="table-rows" key={index}>
                                             {cols.map(col => (
-                                                <td key={col.key} data-title={col.label}>
+                                                <td key={col.key}
+                                                    data-title={col.label}>
                                                     {col.key === 'reparat' ? getValue(row, col) === true ?
                                                         <FontAwesomeIcon icon="check"
                                                                          className="repair-done"/> :
@@ -109,7 +132,10 @@ const DashTable = (props) => {
                                                              onClick={(e) => handleRepair(e, row.id)}>
                                                             <FontAwesomeIcon icon="tools"
                                                                              className="complete-icon"/>
-                                                        </div> : getValue(row, col)}
+                                                        </div> : col.key === 'reparatii' ?
+                                                        <div className="btn show-reparations-modal"
+                                                             onClick={(e) => handleShowReparatii(e, row.id)}>Vezi
+                                                            reparatii</div> : getValue(row, col)}
                                                     {col.key === 'cost' && '€'}
                                                 </td>
                                             ))}
@@ -120,6 +146,7 @@ const DashTable = (props) => {
                                             </td>}
                                         </tr>
                                     ))}
+                                    </tbody>
                                 </table>
                             </div> :
                             <div className="loading">
@@ -133,6 +160,7 @@ const DashTable = (props) => {
                             </div>}
                     </td>
                 </tr>
+                </tbody>
             </table>
             <div className="table-footer">
                 {rows && <span><FontAwesomeIcon icon="search"/>{rows.length} rezultate gasite</span>}
@@ -151,6 +179,8 @@ const DashTable = (props) => {
                                                 handleModalClose={handleModalClose}/>}
                 {safeDelete && deleteUser && <SafeDelete deleteUser={deleteUser} handleModalClose={handleModalClose}
                                                          handleDelete={handleDelete}/>}
+                {showUserRepatatii &&
+                <UserReparation userReparatii={userReparatii} handleModalClose={handleModalClose}/>}
 
             </Modal>
         </div>

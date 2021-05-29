@@ -68,6 +68,13 @@ const Dashboard = (props) => {
         {
             label: "CNP",
             key: "cnp"
+        }, {
+            label: "User ID",
+            key: "id"
+        },
+        {
+            label: "Reparatii",
+            key: "reparatii"
         }
     ]
     const reparatiiCols = [

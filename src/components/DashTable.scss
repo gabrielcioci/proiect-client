@@ -79,6 +79,7 @@
     width: 100%;
     border-right: .1rem solid $cultured;
     text-align: left;
+    box-sizing: border-box;
     padding: 1.2rem 1.6rem;
 
     &:nth-last-of-type(1) {
@@ -87,6 +88,30 @@
 
     &[data-title="Status"] {
       max-width: 8rem;
+    }
+
+    &[data-title="Rol"] {
+      max-width: 12rem;
+    }
+
+    &[data-title="Prenume"] {
+      max-width: 20rem;
+    }
+
+    &[data-title="Nume"] {
+      max-width: 17rem;
+    }
+
+    &[data-title="Telefon"] {
+      max-width: 18rem;
+    }
+
+    &[data-title="CNP"] {
+      max-width: 20rem;
+    }
+
+    &[data-title="Reparatii"] {
+      max-width: 20rem;
     }
   }
 
@@ -107,11 +132,36 @@
       width: 100%;
       text-align: left;
       padding: 1rem 1.6rem;
+      word-break: break-word;
 
       &[data-title="Status"] {
         display: flex;
         justify-content: center;
         max-width: 8rem;
+      }
+
+      &[data-title="Rol"] {
+        max-width: 12rem;
+      }
+
+      &[data-title="Prenume"] {
+        max-width: 20rem;
+      }
+
+      &[data-title="Nume"] {
+        max-width: 17rem;
+      }
+
+      &[data-title="Telefon"] {
+        max-width: 18rem;
+      }
+
+      &[data-title="CNP"] {
+        max-width: 20rem;
+      }
+
+      &[data-title="Reparatii"] {
+        max-width: 20rem;
       }
     }
 
@@ -145,6 +195,15 @@
       align-items: center;
       height: 4rem;
       width: 4rem;
+      background: rgba($arsenic, .5);
+
+      &:hover {
+        background: rgba($arsenic, .7);
+      }
+    }
+
+    .show-reparations-modal {
+      height: 4rem;
       background: rgba($arsenic, .5);
 
       &:hover {
@@ -296,6 +355,42 @@
           border-color: lighten($raisinBlack, 20%);
         }
       }
+    }
+  }
+
+  .reparatie {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.6rem;
+    border: .1rem solid $raisinBlack;
+    border-radius: .4rem;
+    box-sizing: border-box;
+    background: $whiteSmoke;
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: .1rem solid $raisinBlack;
+      padding: .6rem 1.6rem;
+      font-weight: bold;
+    }
+
+    .detalii, .status {
+      padding: .3rem 1.6rem .3rem;
+    }
+
+    .status {
+      span {
+        color: $vividSky;
+
+        &.reparat {
+          color: green;
+        }
+      }
+    }
+
+    &:first-of-type {
+      margin-top: 1rem;
     }
   }
 
